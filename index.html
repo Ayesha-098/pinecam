@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <title>MochiCam CS-100</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Top Bar / App HUD -->
+    <header class="app-header">
+      <div class="brand-tag">
+        PINECAM <span class="model-code">CS-100</span>
+      </div>
+      <div class="top-actions">
+        <button
+          id="btnSettings"
+          class="hud-btn"
+          title="Settings"
+          aria-label="Settings"
+        >
+          ⚙️
+        </button>
+        <button
+          id="btnUpload"
+          class="hud-btn"
+          title="Upload Photo"
+          aria-label="Upload Photo"
+        >
+          📁
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Viewfinder Container -->
+    <main class="viewfinder-container">
+      <canvas id="liveCanvas" class="preview-canvas"></canvas>
+      <div id="flashOverlay" class="flash-overlay"></div>
+      <div id="toast" class="toast-message"></div>
+
+      <!-- Live Digicam Overlay HUD -->
+      <div class="viewfinder-hud">
+        <div class="hud-top">
+          <div class="hud-item mode-badge"><span id="hudMode">PHOTO</span></div>
+          <div class="hud-item rec-indicator" id="recIndicator">
+            <span class="rec-dot"></span>REC <span id="recTimer">00:00</span>
+          </div>
+          <div class="hud-item"><span id="hudBattery">🔋 80%</span></div>
+        </div>
+        <div class="hud-bottom">
+          <div class="hud-item"><span id="hudFilter">CYBER-SHOT</span></div>
+          <div class="hud-item"><span id="hudCounter">SD 999</span></div>
+          <div class="hud-item"><span id="hudDate">’26 08 25</span></div>
+        </div>
+      </div>
+
+      <!-- Grid Overlay -->
+      <div id="gridOverlay" class="grid-overlay hidden">
+        <div class="grid-line v1"></div>
+        <div class="grid-line v2"></div>
+        <div class="grid-line h1"></div>
+        <div class="grid-line h2"></div>
+      </div>
+
+      <!-- Countdown Overlay -->
+      <div id="countdownOverlay" class="countdown-overlay hidden">
+        <span id="countdownNumber">3</span>
+      </div>
+
+      <!-- Hidden Native Inputs / Canvas -->
+      <input type="file" id="fileInput" accept="image/*" class="hidden-input" />
+      <canvas id="offscreenCanvas" class="hidden-input"></canvas>
+    </main>
+
+    <!-- Filter Selector Dial -->
+    <nav class="filter-dial-container">
+      <div id="filterTrack" class="filter-track"></div>
+    </nav>
+
+    <!-- Bottom Capture & Mode Controls -->
+    <footer class="control-panel">
+      <div class="mode-selector">
+        <button id="modePhoto" class="mode-btn active">PHOTO</button>
+        <button id="modeVideo" class="mode-btn">VIDEO</button>
+      </div>
+
+      <div class="shutter-row">
+        <button
+          id="btnGallery"
+          class="aux-btn gallery-preview"
+          aria-label="Open Gallery"
+        >
+          <div id="galleryThumb" class="thumb-placeholder">📷</div>
+        </button>
+        <button
+          id="btnShutter"
+          class="shutter-btn"
+          aria-label="Take Photo or Video"
+        ></button>
+        <button id="btnSwitchCam" class="aux-btn" aria-label="Switch Camera">
+          🔄
+        </button>
+      </div>
+
+      <div class="quick-adjust-bar">
+        <button id="btnQuickFlash" class="quick-btn">FLASH: OFF</button>
+        <button id="btnQuickTimer" class="quick-btn">TIMER: OFF</button>
+        <div id="zoomControls" class="zoom-controls hidden">
+          <button id="btnZoomOut" class="zoom-btn">-</button>
+          <span id="zoomLevel">1.0x</span>
+          <button id="btnZoomIn" class="zoom-btn">+</button>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Captured Photo Result Screen -->
+    <div id="photoResultModal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="modal-media-wrap">
+          <img id="resultImage" alt="Captured Result" />
+        </div>
+        <div class="modal-actions">
+          <button id="btnRetakePhoto" class="modal-btn secondary">
+            RETAKE
+          </button>
+          <button id="btnSavePhoto" class="modal-btn primary">SAVE</button>
+          <button id="btnDeletePhoto" class="modal-btn danger">DELETE</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recorded Video Result Screen -->
+    <div id="videoResultModal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="modal-media-wrap">
+          <video id="resultVideo" controls playsinline></video>
+        </div>
+        <div class="modal-actions">
+          <button id="btnRetakeVideo" class="modal-btn secondary">
+            RETAKE
+          </button>
+          <button id="btnSaveVideo" class="modal-btn primary">SAVE</button>
+          <button id="btnDeleteVideo" class="modal-btn danger">DELETE</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gallery / Storage Modal -->
+    <div id="galleryModal" class="modal-overlay hidden">
+      <div class="gallery-card">
+        <div class="gallery-header">
+          <h3>MEMORY CARD GALLERY (<span id="galleryCount">0</span>)</h3>
+          <button id="btnCloseGallery" class="close-btn">&times;</button>
+        </div>
+        <div id="galleryGrid" class="gallery-grid"></div>
+        <div id="galleryDetail" class="gallery-detail hidden">
+          <div class="detail-media-wrap">
+            <img id="detailImg" class="hidden" alt="Detail View" />
+            <video id="detailVid" class="hidden" controls playsinline></video>
+          </div>
+          <div class="detail-actions">
+            <button id="btnDetailPrev" class="modal-btn secondary">
+              ‹ PREV
+            </button>
+            <button id="btnDetailDownload" class="modal-btn primary">
+              SAVE TO DEVICE
+            </button>
+            <button id="btnDetailDelete" class="modal-btn danger">
+              DELETE
+            </button>
+            <button id="btnDetailNext" class="modal-btn secondary">
+              NEXT ›
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Sheet Modal -->
+    <div id="settingsModal" class="modal-overlay hidden">
+      <div class="settings-card">
+        <div class="settings-header">
+          <h3>CAMERA CONFIGURATION</h3>
+          <button id="btnCloseSettings" class="close-btn">&times;</button>
+        </div>
+        <div class="settings-body">
+          <div class="setting-item">
+            <label for="settingFlash">Flash Mode</label>
+            <select id="settingFlash">
+              <option value="off">Off</option>
+              <option value="on">On (UI Flash)</option>
+              <option value="torch">Torch (Physical LED)</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label for="settingTimer">Self Timer</label>
+            <select id="settingTimer">
+              <option value="0">Off</option>
+              <option value="3">3 Seconds</option>
+              <option value="5">5 Seconds</option>
+              <option value="10">10 Seconds</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label for="settingMirrorPreview">Mirror Live Preview</label>
+            <input type="checkbox" id="settingMirrorPreview" checked />
+          </div>
+          <div class="setting-item">
+            <label for="settingMirrorPhoto">Mirror Captured Photo</label>
+            <input type="checkbox" id="settingMirrorPhoto" />
+          </div>
+          <div class="setting-item">
+            <label for="settingGrid">Framing Grid</label>
+            <input type="checkbox" id="settingGrid" />
+          </div>
+          <div class="setting-item">
+            <label for="settingDateStamp">LCD Date Stamp</label>
+            <input type="checkbox" id="settingDateStamp" checked />
+          </div>
+          <div class="setting-item">
+            <label for="settingDateFormat">Date Format</label>
+            <select id="settingDateFormat">
+              <option value="YYMMDD">YY MM DD</option>
+              <option value="DDMMYY">DD MM YY</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label for="settingGrain">Film Grain Level</label>
+            <select id="settingGrain">
+              <option value="off">Off</option>
+              <option value="low">Low</option>
+              <option value="med" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label for="settingSound">Audio Feedback</label>
+            <input type="checkbox" id="settingSound" checked />
+          </div>
+          <div class="setting-item">
+            <label for="settingHaptics">Haptic Feedback</label>
+            <input type="checkbox" id="settingHaptics" checked />
+          </div>
+          <div class="setting-info" id="cameraHardwareInfo">
+            Camera Hardware: Loading...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MediaPipe Engine Integration -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="[https://unpkg.com/lucide@latest](https://unpkg.com/lucide@latest)"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
