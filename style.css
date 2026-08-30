@@ -1,19 +1,16 @@
 :root {
-  --bg-dark: #0f0f11;
-  --panel-dark: #1a1a1e;
-  --bezel-dark: #242429;
-  --accent-tan: #d2b48c;
-  --accent-tan-bright: #e6ca9f;
-  --accent-tan-dark: #8c7355;
-  --accent-red: #ff3b30;
-  --lcd-amber: #ffaa00;
-  --text-main: #e5e5e7;
-  --text-muted: #8e8e93;
-  --border-subtle: #333338;
+  --bg-page: #121214;
+  --body-bg: #1c1c20;
+  --panel-bg: #26262b;
+  --accent-gold: #e6a15c;
+  --accent-gold-hover: #cf8b46;
+  --text-main: #f0f0f3;
+  --text-muted: #8e8e99;
+  --border-soft: #383842;
+
   --font-hud: "Share Tech Mono", monospace;
-  --font-ui: "Inter", system-ui, -apple-system, sans-serif;
-  --safe-top: env(safe-area-inset-top, 0px);
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --font-ui: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
 }
 
 * {
@@ -21,82 +18,99 @@
   margin: 0;
   padding: 0;
   user-select: none;
-  -webkit-user-select: none;
-  -webkit-touch-callout: none;
 }
 
 html,
 body {
   width: 100%;
   height: 100dvh;
-  background-color: var(--bg-dark);
+  background-color: var(--bg-page);
   color: var(--text-main);
   font-family: var(--font-ui);
-  overflow: hidden;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
-/* App Header */
+.camera-hardware-body {
+  width: 100%;
+  max-width: 440px;
+  height: 100%;
+  max-height: 870px;
+  background-color: var(--body-bg);
+  border: 1px solid var(--border-soft);
+  border-radius: 20px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.icon-svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
 .app-header {
-  height: calc(44px + var(--safe-top));
-  padding-top: var(--safe-top);
-  padding-left: 16px;
-  padding-right: 16px;
-  background-color: var(--panel-dark);
-  border-bottom: 1px solid var(--border-subtle);
+  height: 48px;
+  padding: 0 14px;
+  background-color: var(--panel-bg);
+  border-bottom: 1px solid var(--border-soft);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  z-index: 10;
-  flex-shrink: 0;
 }
 
+.brand-wrap {
+  display: flex;
+  flex-direction: column;
+}
 .brand-tag {
-  font-size: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 1.5px;
-  color: var(--accent-tan);
+  color: var(--accent-gold);
+  letter-spacing: 1px;
 }
-
 .model-code {
-  font-size: 10px;
+  font-size: 8px;
   color: var(--text-muted);
-  margin-left: 4px;
-  border: 1px solid var(--border-subtle);
-  padding: 1px 4px;
-  border-radius: 3px;
+  font-weight: 600;
 }
 
 .top-actions {
   display: flex;
-  gap: 8px;
+  gap: 4px;
 }
-
 .hud-btn {
-  background: var(--bezel-dark);
-  border: 1px solid var(--border-subtle);
+  background: var(--body-bg);
+  border: 1px solid var(--border-soft);
   color: var(--text-main);
-  padding: 6px 12px;
+  padding: 5px 8px;
   border-radius: 6px;
-  font-size: 14px;
+  font-size: 10px;
+  font-weight: 600;
   cursor: pointer;
 }
-
-.hud-btn:active {
-  background: var(--accent-tan-dark);
+.hud-btn.active {
+  background: var(--accent-gold);
+  color: #000;
+  border-color: var(--accent-gold);
 }
 
-/* Viewfinder Area */
 .viewfinder-container {
   flex: 1;
   position: relative;
   background-color: #000;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 0;
+  margin: 10px;
+  border-radius: 12px;
+  border: 1px solid var(--border-soft);
 }
 
 .preview-canvas {
@@ -105,7 +119,6 @@ body {
   object-fit: cover;
 }
 
-/* Digicam HUD Overlay */
 .viewfinder-hud {
   position: absolute;
   inset: 12px;
@@ -114,10 +127,8 @@ body {
   flex-direction: column;
   justify-content: space-between;
   font-family: var(--font-hud);
-  color: var(--lcd-amber);
-  text-shadow: 0 0 4px rgba(255, 170, 0, 0.6);
+  color: var(--accent-gold);
   font-size: 13px;
-  z-index: 4;
 }
 
 .hud-top,
@@ -126,37 +137,34 @@ body {
   justify-content: space-between;
   align-items: center;
 }
-
-.mode-badge {
-  background: rgba(0, 0, 0, 0.6);
-  padding: 2px 6px;
-  border-radius: 3px;
-  border: 1px solid rgba(255, 170, 0, 0.4);
-}
-
-.rec-indicator {
-  display: none;
-  align-items: center;
-  gap: 6px;
-  color: var(--accent-red);
-  text-shadow: 0 0 4px rgba(255, 59, 48, 0.6);
-}
-
-.rec-indicator.active {
+.hud-pill-group {
   display: flex;
+  gap: 4px;
+}
+
+.mode-badge,
+.status-tag {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
 }
 
 .rec-dot {
-  width: 8px;
-  height: 8px;
-  background-color: var(--accent-red);
-  border-radius: 50%;
+  color: #ff4d4d;
   animation: blink 1s infinite;
+  font-weight: 700;
 }
-
+.live-dot {
+  color: #51ff85;
+}
 @keyframes blink {
   50% {
-    opacity: 0;
+    opacity: 0.2;
   }
 }
 
@@ -168,14 +176,12 @@ body {
   pointer-events: none;
   z-index: 8;
 }
-
 .flash-overlay.active {
-  animation: flash-animation 0.3s ease-out;
+  animation: flash-anim 0.2s ease-out;
 }
-
-@keyframes flash-animation {
+@keyframes flash-anim {
   0% {
-    opacity: 1;
+    opacity: 0.95;
   }
   100% {
     opacity: 0;
@@ -184,150 +190,123 @@ body {
 
 .toast-message {
   position: absolute;
-  top: 16px;
+  top: 14px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(20, 20, 24, 0.9);
-  color: var(--accent-tan);
-  border: 1px solid var(--accent-tan);
-  font-family: var(--font-hud);
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 12px;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  border: 1px solid var(--accent-gold);
+  padding: 5px 14px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
   opacity: 0;
   transition: opacity 0.3s;
   pointer-events: none;
   z-index: 9;
 }
-
 .toast-message.show {
   opacity: 1;
-}
-
-.grid-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 3;
-}
-
-.grid-line {
-  position: absolute;
-  background-color: rgba(255, 255, 255, 0.25);
-}
-
-.grid-line.v1 {
-  left: 33.33%;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-}
-.grid-line.v2 {
-  left: 66.66%;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-}
-.grid-line.h1 {
-  top: 33.33%;
-  left: 0;
-  right: 0;
-  height: 1px;
-}
-.grid-line.h2 {
-  top: 66.66%;
-  left: 0;
-  right: 0;
-  height: 1px;
 }
 
 .countdown-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-hud);
   font-size: 80px;
-  color: var(--accent-tan);
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--accent-gold);
   z-index: 7;
 }
 
-/* Filter Dial */
+.fx-adjustments-bar {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background-color: var(--panel-bg);
+}
+
+.adjust-chip {
+  background: var(--body-bg);
+  border: 1px solid var(--border-soft);
+  color: var(--text-muted);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.adjust-chip.active {
+  background: var(--accent-gold);
+  color: #000;
+  border-color: var(--accent-gold);
+}
+
 .filter-dial-container {
   height: 48px;
-  background-color: var(--panel-dark);
-  border-top: 1px solid var(--border-subtle);
+  background-color: var(--panel-bg);
+  border-top: 1px solid var(--border-soft);
   overflow-x: auto;
   white-space: nowrap;
   scrollbar-width: none;
   display: flex;
   align-items: center;
-  z-index: 5;
-  flex-shrink: 0;
-}
-
-.filter-dial-container::-webkit-scrollbar {
-  display: none;
 }
 
 .filter-track {
   display: flex;
   gap: 8px;
-  padding: 0 16px;
+  padding: 0 10px;
 }
 
 .filter-chip {
-  background: var(--bezel-dark);
-  border: 1px solid var(--border-subtle);
+  background: var(--body-bg);
+  border: 1px solid var(--border-soft);
   color: var(--text-muted);
-  padding: 6px 14px;
-  border-radius: 16px;
+  padding: 6px 12px;
+  border-radius: 6px;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
 }
-
 .filter-chip.active {
-  background: var(--accent-tan);
-  color: var(--bg-dark);
-  border-color: var(--accent-tan-bright);
+  background: #fff;
+  color: #000;
+  border-color: #fff;
 }
 
-/* Control Panel */
 .control-panel {
-  background-color: var(--panel-dark);
-  padding: 10px 16px calc(10px + var(--safe-bottom));
+  background-color: var(--panel-bg);
+  padding: 12px 14px 18px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  z-index: 5;
-  border-top: 1px solid var(--border-subtle);
-  flex-shrink: 0;
+  gap: 12px;
+  border-top: 1px solid var(--border-soft);
 }
 
 .mode-selector {
   display: flex;
   justify-content: center;
-  gap: 24px;
+  gap: 16px;
 }
-
 .mode-btn {
   background: none;
   border: none;
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   cursor: pointer;
   padding-bottom: 2px;
 }
-
 .mode-btn.active {
-  color: var(--accent-tan);
-  border-bottom: 2px solid var(--accent-tan);
+  color: var(--accent-gold);
+  border-bottom: 2px solid var(--accent-gold);
 }
 
 .shutter-row {
@@ -337,113 +316,56 @@ body {
 }
 
 .shutter-btn {
-  width: 64px;
-  height: 64px;
+  width: 62px;
+  height: 62px;
   border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    var(--accent-tan-bright) 0%,
-    var(--accent-tan) 60%,
-    var(--accent-tan-dark) 100%
-  );
-  border: 4px solid var(--bezel-dark);
-  box-shadow:
-    0 0 0 2px var(--accent-tan),
-    0 4px 10px rgba(0, 0, 0, 0.5);
+  background: var(--accent-gold);
+  border: 3px solid #fff;
   cursor: pointer;
-  transition: transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s ease;
 }
-
 .shutter-btn:active {
-  transform: scale(0.92);
+  transform: scale(0.94);
 }
 
-.shutter-btn.recording {
-  background: radial-gradient(
-    circle,
-    #ff6b6b 0%,
-    var(--accent-red) 60%,
-    #990000 100%
-  );
-  box-shadow:
-    0 0 0 2px var(--accent-red),
-    0 4px 10px rgba(0, 0, 0, 0.5);
-  border-radius: 16px;
-}
-
-.aux-btn {
+.shutter-inner {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: var(--bezel-dark);
-  border: 1px solid var(--border-subtle);
+  background: #fff;
+  transition: all 0.2s ease;
+}
+.shutter-btn.recording .shutter-inner {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  background: #ff4d4d;
+}
+
+.aux-btn,
+.aux-placeholder {
+  width: 40px;
+  height: 40px;
+}
+.aux-btn {
+  border-radius: 8px;
+  background: var(--body-bg);
+  border: 1px solid var(--border-soft);
   color: var(--text-main);
-  font-size: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  overflow: hidden;
 }
 
-.aux-btn:active {
-  background: var(--accent-tan-dark);
-}
-
-.thumb-placeholder {
-  font-size: 14px;
-}
-
-.gallery-preview img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.quick-adjust-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 11px;
-}
-
-.quick-btn {
-  background: var(--bezel-dark);
-  border: 1px solid var(--border-subtle);
-  color: var(--text-muted);
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-family: var(--font-hud);
-  cursor: pointer;
-}
-
-.zoom-controls {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--bezel-dark);
-  border: 1px solid var(--border-subtle);
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-family: var(--font-hud);
-  color: var(--accent-tan);
-}
-
-.zoom-btn {
-  background: none;
-  border: none;
-  color: var(--text-main);
-  font-size: 14px;
-  cursor: pointer;
-  padding: 0 4px;
-}
-
-/* Fixed Mobile Modal & Gallery Scroll Containers */
 .modal-overlay {
-  position: fixed;
+  position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -451,600 +373,133 @@ body {
   padding: 12px;
 }
 
-.modal-card {
-  background: var(--panel-dark);
-  border: 1px solid var(--border-subtle);
-  border-radius: 12px;
+.preview-card,
+.photobooth-card {
+  background: var(--body-bg);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
   width: 100%;
-  max-width: 420px;
-  max-height: 90dvh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 
-.modal-media-wrap {
-  flex: 1;
-  width: 100%;
-  min-height: 0;
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.modal-media-wrap img,
-.modal-media-wrap video {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-.modal-actions {
-  display: flex;
-  gap: 8px;
-  padding: 12px;
-  background: var(--panel-dark);
-  flex-shrink: 0;
-}
-
-.modal-btn {
-  flex: 1;
-  padding: 10px 4px;
-  border-radius: 6px;
-  border: none;
-  font-weight: 600;
-  font-size: 11px;
-  cursor: pointer;
-  text-align: center;
-}
-
-.modal-btn.primary {
-  background: var(--accent-tan);
-  color: var(--bg-dark);
-}
-.modal-btn.secondary {
-  background: var(--bezel-dark);
-  color: var(--text-main);
-  border: 1px solid var(--border-subtle);
-}
-.modal-btn.danger {
-  background: var(--accent-red);
-  color: #fff;
-}
-
-/* Gallery Modal Fixes */
-.gallery-card {
-  background: var(--panel-dark);
-  border: 1px solid var(--border-subtle);
-  border-radius: 12px;
-  width: 100%;
-  max-width: 500px;
-  height: 85dvh;
-  max-height: 85dvh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.gallery-header,
-.settings-header {
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border-subtle);
+.modal-header {
+  padding: 10px 14px;
+  background: var(--panel-bg);
+  border-bottom: 1px solid var(--border-soft);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 13px;
-  color: var(--accent-tan);
-  flex-shrink: 0;
+  color: var(--accent-gold);
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .close-btn {
   background: none;
   border: none;
+  font-size: 16px;
   color: var(--text-muted);
-  font-size: 20px;
   cursor: pointer;
 }
 
-.gallery-grid {
-  flex: 1;
-  padding: 12px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.gallery-item {
-  aspect-ratio: 1;
-  background: var(--bezel-dark);
-  border-radius: 6px;
-  overflow: hidden;
-  cursor: pointer;
-  position: relative;
-}
-
-.gallery-item img,
-.gallery-item video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.gallery-item .video-badge {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  background: rgba(0, 0, 0, 0.7);
-  font-size: 9px;
-  padding: 2px 4px;
-  border-radius: 3px;
-}
-
-.gallery-detail {
-  flex: 1;
+.modal-preview-body {
+  padding: 10px;
   display: flex;
-  flex-direction: column;
-  background: #000;
-  min-height: 0;
-  overflow: hidden;
-}
-
-.detail-media-wrap {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  overflow: hidden;
+  background: #000;
+}
+#singlePreviewImg {
+  max-height: 48vh;
+  width: auto;
+  border-radius: 6px;
 }
 
-.detail-media-wrap img,
-.detail-media-wrap video {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+.modal-footer {
+  padding: 10px;
+  background: var(--panel-bg);
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  border-top: 1px solid var(--border-soft);
 }
 
-.detail-actions {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
+.photobooth-body {
+  display: flex;
+  padding: 10px;
+  gap: 10px;
+}
+
+.strip-preview-area {
+  flex: 1;
+  background: #000;
+  border-radius: 8px;
   padding: 8px;
-  background: var(--panel-dark);
-  flex-shrink: 0;
-}
-
-/* Settings Sheet */
-.settings-card {
-  background: var(--panel-dark);
-  border: 1px solid var(--border-subtle);
-  border-radius: 12px;
-  width: 100%;
-  max-width: 400px;
-  max-height: 85dvh;
   display: flex;
-  flex-direction: column;
-}
-
-.settings-body {
-  padding: 16px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.setting-item {
-  display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  font-size: 13px;
 }
 
-.setting-item select,
-.setting-item input[type="checkbox"] {
-  background: var(--bezel-dark);
-  color: var(--text-main);
-  border: 1px solid var(--border-subtle);
-  padding: 4px 8px;
+#stripCanvas {
+  max-height: 44vh;
+  width: auto;
+}
+
+.photobooth-controls {
+  width: 110px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.control-group label {
+  font-size: 10px;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 4px;
+}
+.color-picker-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+.color-dot {
+  width: 24px;
+  height: 24px;
   border-radius: 4px;
+  border: 1px solid #555;
+  cursor: pointer;
+}
+.color-dot.active {
+  border: 2px solid var(--accent-gold);
 }
 
-.setting-info {
-  font-family: var(--font-hud);
+.photobooth-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: auto;
+}
+
+.modal-btn {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 700;
   font-size: 11px;
-  color: var(--text-muted);
-  border-top: 1px solid var(--border-subtle);
-  padding-top: 10px;
-  margin-top: 6px;
+  cursor: pointer;
+}
+.modal-btn.primary {
+  background: var(--accent-gold);
+  color: #000;
+}
+.modal-btn.secondary {
+  background: var(--body-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border-soft);
 }
 
 .hidden,
 .hidden-input {
   display: none !important;
-}
-
-/* =========================================================
-   DESKTOP / LAPTOP DIGICAM MODE
-   The phone UI stays untouched above this breakpoint.
-   On larger screens the app becomes a compact digital-camera
-   console with a large 4:3 LCD viewfinder.
-   ========================================================= */
-@media (min-width: 768px) {
-  html,
-  body {
-    min-height: 100dvh;
-  }
-
-  body {
-    align-items: center;
-    justify-content: center;
-    padding: 28px;
-    background: radial-gradient(
-      circle at 50% 35%,
-      #26262a 0%,
-      #101012 48%,
-      #050506 100%
-    );
-    overflow: auto;
-  }
-
-  /* Camera body */
-  .app-header,
-  .viewfinder-container,
-  .filter-dial-container,
-  .control-panel {
-    width: min(1100px, calc(100vw - 56px));
-  }
-
-  .app-header {
-    height: 58px;
-    padding: 0 24px;
-    background: linear-gradient(180deg, #29292e 0%, #1a1a1e 100%);
-    border: 1px solid #3b3b40;
-    border-bottom: 0;
-    border-radius: 18px 18px 0 0;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.06),
-      0 18px 50px rgba(0, 0, 0, 0.45);
-  }
-
-  .brand-tag {
-    font-size: 15px;
-    letter-spacing: 2px;
-  }
-
-  .model-code {
-    font-size: 10px;
-  }
-
-  .top-actions {
-    gap: 10px;
-  }
-
-  .hud-btn {
-    min-width: 42px;
-    height: 34px;
-    padding: 6px 11px;
-    border-radius: 7px;
-  }
-
-  /* Main LCD / viewfinder */
-  .viewfinder-container {
-    height: min(61vw, 690px);
-    aspect-ratio: 4 / 3;
-    flex: none;
-    max-height: calc(100dvh - 260px);
-    min-height: 420px;
-    background: #000;
-    border: 10px solid #29292e;
-    border-top: 1px solid #343439;
-    border-bottom: 1px solid #343439;
-    box-shadow:
-      inset 0 0 0 1px rgba(255, 255, 255, 0.04),
-      inset 0 0 50px rgba(0, 0, 0, 0.45),
-      0 0 0 1px #09090a,
-      0 22px 55px rgba(0, 0, 0, 0.5);
-  }
-
-  .preview-canvas {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  /* Extra LCD glass effect */
-  .viewfinder-container::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 2;
-    background: linear-gradient(
-      115deg,
-      rgba(255, 255, 255, 0.055) 0%,
-      rgba(255, 255, 255, 0.012) 22%,
-      transparent 45%
-    );
-    mix-blend-mode: screen;
-  }
-
-  .viewfinder-hud {
-    inset: 18px;
-    font-size: 15px;
-  }
-
-  .mode-badge {
-    padding: 4px 9px;
-  }
-
-  .rec-dot {
-    width: 9px;
-    height: 9px;
-  }
-
-  .toast-message {
-    top: 22px;
-    padding: 8px 18px;
-    font-size: 13px;
-  }
-
-  .countdown-overlay {
-    font-size: clamp(80px, 9vw, 130px);
-  }
-
-  /* Filters become the camera's physical mode/filter strip */
-  .filter-dial-container {
-    height: 62px;
-    padding: 0 14px;
-    background: linear-gradient(180deg, #202024 0%, #18181b 100%);
-    border: 1px solid #35353a;
-    border-top: 0;
-    overflow-x: auto;
-  }
-
-  .filter-track {
-    width: max-content;
-    min-width: 100%;
-    justify-content: center;
-    gap: 10px;
-    padding: 0 10px;
-  }
-
-  .filter-chip {
-    padding: 8px 17px;
-    border-radius: 18px;
-    font-size: 11px;
-    letter-spacing: 0.2px;
-  }
-
-  /* Physical-looking camera control deck */
-  .control-panel {
-    position: relative;
-    padding: 14px 28px 18px;
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    grid-template-areas:
-      "quick mode quick2"
-      "left shutter right";
-    column-gap: 30px;
-    row-gap: 10px;
-    background: linear-gradient(180deg, #202024 0%, #151518 100%);
-    border: 1px solid #35353a;
-    border-top: 0;
-    border-radius: 0 0 18px 18px;
-    box-shadow:
-      inset 0 -1px 0 rgba(255, 255, 255, 0.025),
-      0 24px 55px rgba(0, 0, 0, 0.5);
-  }
-
-  .mode-selector {
-    grid-area: mode;
-    grid-column: 1 / -1;
-    justify-content: center;
-    gap: 34px;
-    order: 0;
-  }
-
-  .mode-btn {
-    font-size: 12px;
-    padding: 3px 4px 5px;
-  }
-
-  .shutter-row {
-    grid-area: shutter;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 32px;
-    order: 2;
-  }
-
-  .shutter-btn {
-    width: 76px;
-    height: 76px;
-  }
-
-  .aux-btn {
-    width: 48px;
-    height: 48px;
-    font-size: 18px;
-  }
-
-  /* Keep the left/right utility controls balanced around the shutter */
-  .shutter-row .gallery-preview {
-    position: absolute;
-    left: 28px;
-  }
-
-  .shutter-row #btnSwitchCam {
-    position: absolute;
-    right: 28px;
-  }
-
-  .quick-adjust-bar {
-    grid-area: quick;
-    position: absolute;
-    left: 28px;
-    bottom: 22px;
-    width: auto;
-    justify-content: flex-start;
-    gap: 8px;
-  }
-
-  .quick-btn {
-    padding: 6px 11px;
-    font-size: 10px;
-  }
-
-  .zoom-controls {
-    padding: 4px 9px;
-  }
-
-  /* Desktop gallery/settings become spacious workstation dialogs */
-  .modal-overlay {
-    padding: 28px;
-  }
-
-  .modal-card {
-    max-width: min(900px, 86vw);
-    max-height: 88dvh;
-    border-radius: 16px;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
-  }
-
-  .modal-media-wrap {
-    min-height: 420px;
-  }
-
-  .modal-actions {
-    padding: 14px;
-    gap: 10px;
-  }
-
-  .modal-btn {
-    padding: 11px 8px;
-    font-size: 12px;
-  }
-
-  .gallery-card {
-    max-width: min(1050px, 90vw);
-    width: 100%;
-    height: min(780px, 86dvh);
-    max-height: 86dvh;
-    border-radius: 16px;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
-  }
-
-  .gallery-header,
-  .settings-header {
-    padding: 15px 20px;
-  }
-
-  .gallery-grid {
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-    padding: 16px;
-  }
-
-  .gallery-item {
-    border-radius: 8px;
-  }
-
-  .settings-card {
-    max-width: 560px;
-    max-height: 82dvh;
-    border-radius: 16px;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
-  }
-
-  .settings-body {
-    padding: 20px;
-    gap: 16px;
-  }
-
-  .setting-item {
-    font-size: 13px;
-  }
-}
-
-/* Wider laptop / desktop refinement */
-@media (min-width: 1200px) {
-  body {
-    padding: 36px;
-  }
-
-  .app-header,
-  .viewfinder-container,
-  .filter-dial-container,
-  .control-panel {
-    width: min(1180px, calc(100vw - 72px));
-  }
-
-  .viewfinder-container {
-    max-height: 670px;
-  }
-
-  .control-panel {
-    padding-left: 34px;
-    padding-right: 34px;
-  }
-
-  .shutter-row .gallery-preview {
-    left: 34px;
-  }
-
-  .shutter-row #btnSwitchCam {
-    right: 34px;
-  }
-
-  .quick-adjust-bar {
-    left: 34px;
-  }
-}
-
-/* Smaller laptops: preserve the full camera deck without crowding */
-@media (min-width: 768px) and (max-height: 800px) {
-  body {
-    padding-top: 14px;
-    padding-bottom: 14px;
-  }
-
-  .app-header {
-    height: 48px;
-  }
-
-  .viewfinder-container {
-    height: min(52vw, 500px);
-    min-height: 320px;
-    max-height: calc(100dvh - 215px);
-  }
-
-  .filter-dial-container {
-    height: 50px;
-  }
-
-  .control-panel {
-    padding-top: 8px;
-    padding-bottom: 10px;
-    row-gap: 6px;
-  }
-
-  .shutter-btn {
-    width: 62px;
-    height: 62px;
-  }
-
-  .aux-btn {
-    width: 42px;
-    height: 42px;
-  }
-
-  .quick-adjust-bar {
-    bottom: 14px;
-  }
 }
