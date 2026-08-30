@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
-    <title>Dazz Analog Camera Studio</title>
+    <title>Pinecam Digital Camera</title>
     <link rel="stylesheet" href="style.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap"
@@ -18,14 +18,14 @@
       <!-- Top Hardware Controls -->
       <header class="app-header">
         <div class="brand-wrap">
-          <span class="brand-tag">DAZZ ANALOG</span>
+          <span class="brand-tag">PINECAM</span>
           <span class="model-code">STUDIO PRO v2.0</span>
         </div>
         <div class="top-actions">
-          <button class="hud-btn active" id="lightLeakToggle">☀️ LEAKS</button>
-          <button class="hud-btn active" id="grainToggle">🌾 GRAIN</button>
-          <button class="hud-btn" id="flashToggle">⚡ OFF</button>
-          <button class="hud-btn" id="timerToggle">⏱️ 0s</button>
+          <button class="hud-btn active" id="lightLeakToggle">LEAKS</button>
+          <button class="hud-btn active" id="grainToggle">GRAIN</button>
+          <button class="hud-btn" id="flashToggle">OFF</button>
+          <button class="hud-btn" id="timerToggle">0s</button>
         </div>
       </header>
 
@@ -73,7 +73,7 @@
             <span class="rec-dot hidden" id="recDot"
               >● REC <span id="recTimer">00:00</span></span
             >
-            <span class="live-dot" id="liveDot">● ANALOG</span>
+            <span class="live-dot" id="liveDot">● Camera</span>
           </div>
           <div class="hud-bottom">
             <span class="timestamp-hud" id="hudTimestamp">'26 08 31</span>
@@ -96,40 +96,38 @@
         </button>
         <button class="adjust-chip" id="aspectBtn">Ratio: 4:3</button>
         <button class="adjust-chip" id="wbBtn">WB: Daylight</button>
-        <button class="adjust-chip" id="leakAngleBtn">Leak: ↗️</button>
-        <button class="adjust-chip" id="flipCamBtn">Flip Lens 🔄</button>
+        <button class="adjust-chip" id="leakAngleBtn">Leak</button>
+        <button class="adjust-chip" id="flipCamBtn">Flip Lens</button>
       </div>
 
       <!-- Dazz Dial Presets -->
       <nav class="filter-dial-container">
         <div class="filter-track" id="filterTrack">
           <button class="filter-chip active" data-filter="cpm35">
-            🎞️ CPM-35 (Warm)
+            CPM-35 (Warm)
           </button>
           <button class="filter-chip" data-filter="mono">
-            🖤 Mono Noir (B&W)
+            Mono Noir (B&W)
           </button>
           <button class="filter-chip" data-filter="dclassic">
-            📷 D Classic (CCD Green)
+            D Classic (CCD Green)
           </button>
           <button class="filter-chip" data-filter="classicFilm">
-            📽️ Classic Film (90s)
+            Classic Film (90s)
           </button>
           <button class="filter-chip" data-filter="instantC">
-            📸 Instant C (Polaroid)
+            Instant C (Polaroid)
           </button>
           <button class="filter-chip" data-filter="fx70">
-            📼 FX-70 (Retro VHS)
+            FX-70 (Retro VHS)
           </button>
           <button class="filter-chip" data-filter="grd">
-            🎬 GR D (Crunch B&W)
+            GR D (Crunch B&W)
           </button>
           <button class="filter-chip" data-filter="fuji400">
-            🌲 Fuji 400 (Teal)
+            Fuji 400 (Teal)
           </button>
-          <button class="filter-chip" data-filter="sunset">
-            🌅 Sunset Gold
-          </button>
+          <button class="filter-chip" data-filter="sunset">Sunset Gold</button>
         </div>
       </nav>
 
@@ -234,7 +232,7 @@
                 type="text"
                 id="stripTextInput"
                 class="custom-text-input"
-                value="DAZZ STUDIO • 2026"
+                value="PINECAM • 2026"
                 maxlength="28"
               />
             </div>
