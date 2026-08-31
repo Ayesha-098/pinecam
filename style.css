@@ -511,6 +511,8 @@ body {
 #stripCanvas {
   max-height: 44vh;
   width: auto;
+  object-fit: contain;
+  max-width: 100%;
 }
 
 .photobooth-controls {

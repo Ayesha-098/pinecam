@@ -519,18 +519,42 @@ document.addEventListener("DOMContentLoaded", () => {
     stripCanvas.width = targetW + margin * 2;
     stripCanvas.height = topPadding + targetH * 4 + margin * 3 + bottomPadding;
 
+    // Fill background border
     stripCtx.fillStyle = selectedFrameColor;
     stripCtx.fillRect(0, 0, stripCanvas.width, stripCanvas.height);
 
     capturedBurstPhotos.forEach((sourceCanvas, idx) => {
       const destX = margin;
       const destY = topPadding + idx * (targetH + margin);
+
+      // --- ASPECT FILL / CENTER CROP LOGIC (Prevents Stretching) ---
+      const srcW = sourceCanvas.width;
+      const srcH = sourceCanvas.height;
+      const targetAspect = targetW / targetH;
+      const srcAspect = srcW / srcH;
+
+      let cropX = 0,
+        cropY = 0,
+        cropW = srcW,
+        cropH = srcH;
+
+      if (srcAspect > targetAspect) {
+        // Image is wider than target frame -> crop left/right sides
+        cropW = srcH * targetAspect;
+        cropX = (srcW - cropW) / 2;
+      } else {
+        // Image is taller than target frame -> crop top/bottom sides
+        cropH = srcW / targetAspect;
+        cropY = (srcH - cropH) / 2;
+      }
+
+      // Draw cropped portion nicely into the photostrip frame
       stripCtx.drawImage(
         sourceCanvas,
-        0,
-        0,
-        sourceCanvas.width,
-        sourceCanvas.height,
+        cropX,
+        cropY,
+        cropW,
+        cropH,
         destX,
         destY,
         targetW,
@@ -538,6 +562,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     });
 
+    // Custom Label Text Rendering
     const isDark = selectedFrameColor === "#1e1e24";
     stripCtx.fillStyle = isDark ? "#ffffff" : "#1c1c20";
     stripCtx.font = '700 13px "JetBrains Mono", monospace';
